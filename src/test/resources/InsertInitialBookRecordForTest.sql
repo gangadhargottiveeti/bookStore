@@ -1,0 +1,1 @@
+insert into book(id, title, description, release_year) values ('b5e57868-35a6-46ba-afe5-98bcfea9e399', 'Someone', 'life story of someone', 2020)
