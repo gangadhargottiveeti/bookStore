@@ -1,11 +1,9 @@
-package com.beachUpSkilling.bookStore.model;
+package com.beachUpSkilling.bookStore.dto;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.antlr.v4.runtime.misc.NotNull;
 
 import java.util.UUID;
 
@@ -13,21 +11,12 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-public class Book {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "UUID")
+public class BookDto {
     private UUID id;
 
-    @Column
-    @NotNull
     private String title;
 
-    @Column
-    @NotNull
     private String description;
 
-    @Column
-    @NotNull
     private int release_year;
 }
