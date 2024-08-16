@@ -24,7 +24,7 @@ public class BookService {
     }
 
 
-    List<BookDto> getBooks() {
+    public List<BookDto> getBooks() {
         Iterable<Book> allBooks = bookRepository.findAll();
         return StreamSupport.stream(allBooks.spliterator(), false)
                 .map(convertBookModelToBookDto())
