@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -32,6 +33,18 @@ public class BookControllerTest {
         when(bookService.getBooks()).thenReturn(allBooks);
 
         List<BookDto> actualBooks = bookController.books().getBody();
+
+        assertThat(actualBooks.size()).isEqualTo(1);
+    }
+
+    @Test
+    void shouldReturnListOfBookDtoWhenBooksByTitleIgnoreCaseIsCalled() {
+        BookDto bookDto = getBookDto();
+        List<BookDto> allBooks = new ArrayList<>();
+        allBooks.add(bookDto);
+        when(bookService.getBooksByTitleIgnoreCase(anyString())).thenReturn(allBooks);
+
+        List<BookDto> actualBooks = bookController.booksByTitleIgnoreCase("gangadhar").getBody();
 
         assertThat(actualBooks.size()).isEqualTo(1);
     }

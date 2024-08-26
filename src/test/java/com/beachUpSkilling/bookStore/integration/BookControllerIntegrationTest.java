@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -15,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(classes = BookStoreApplication.class,
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@ActiveProfiles("test")
 public class BookControllerIntegrationTest {
 
     @LocalServerPort
@@ -29,5 +31,13 @@ public class BookControllerIntegrationTest {
         BookDto[] listOfBooks = testRestTemplate.getForObject("http://localhost:" + port + "/bookStore/books", BookDto[].class);
         assertThat(listOfBooks).isNotNull();
         assertThat(listOfBooks.length).isEqualTo(2);
+    }
+
+    @Test
+    @Sql(scripts = {"classpath:InsertInitialBookRecordForTest.sql"})
+    void shouldReturnBooksWhenTitleIsGivenAsPathVariable() {
+        BookDto[] listOfBooks = testRestTemplate.getForObject("http://localhost:" + port + "/bookStore/books/gangadhar", BookDto[].class);
+        assertThat(listOfBooks).isNotNull();
+        assertThat(listOfBooks.length).isEqualTo(1);
     }
 }

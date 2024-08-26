@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -44,6 +45,20 @@ public class BookServiceTest {
                 .hasFieldOrPropertyWithValue("title", "Gangadhar")
                 .hasFieldOrPropertyWithValue("description", "gangadhar book")
                 .hasFieldOrPropertyWithValue("release_year", 2002);
+    }
+
+    @Test
+    void shouldReturnListOfBookDtoWhenBookTitleIsGivenIgnoreCase() {
+        List<Book> books = new ArrayList<>();
+        Book book = getBook();
+        books.add(book);
+        BookDto bookDto = getBookDto();
+        when(mapper.map(book, BookDto.class)).thenReturn(bookDto);
+        when(bookRepository.findBooksByTitleIgnoreCase(anyString())).thenReturn(books);
+
+        List<BookDto> actualBooks = bookService.getBooksByTitleIgnoreCase("gangadhar");
+
+        assertThat(actualBooks.size()).isEqualTo(1);
     }
 
     private Book getBook() {
